@@ -21327,7 +21327,11 @@ div.ant-typography-edit-content {
     padding: 0;
     opacity: 0;
   }
-}.demo-infinite-container {
+}body {
+  background-color: #f0f2f5;
+}
+
+.demo-infinite-container {
   border-radius: 4px;
   overflow: auto;
   padding: 8px 24px;
@@ -21341,12 +21345,27 @@ div.ant-typography-edit-content {
   text-align: center;
 }
 
-.c-list {
+.c-list-wrapper {
+  padding: 20px;
+}
+
+.c-list-item {
   background-color: #ffffff;
   border: 1px solid #ffffff;
   padding: 10px 14px;
-  margin-bottom: 4px;
+  margin-top: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  position: relative;
+}
+
+.c-list-item-badge {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.text-danger {
+  color: #ff4d4f !important;
 }
 
 .navbar-laravel {

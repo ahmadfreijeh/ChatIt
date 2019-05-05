@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {
-    List, message, Avatar, Spin, Button, Row, Col,Layout
+    List, message, Avatar, Spin, Row, Col, Layout, Badge,Button
 } from 'antd';
 import reqwest from 'reqwest';
 import InfiniteScroll from 'react-infinite-scroller';
 
-const fakeDataUrl = 'http://localhost:8000/chat/history';
+const history = 'http://localhost:8000/chat/history';
 
 export default class History extends Component {
 
@@ -29,7 +29,7 @@ export default class History extends Component {
 
     fetchData(callback) {
         reqwest({
-            url: fakeDataUrl,
+            url: history,
             type: 'json',
             method: 'get',
             contentType: 'application/json',
@@ -53,7 +53,7 @@ export default class History extends Component {
             return;
         }
         this.fetchData((res) => {
-            data = data.concat(res.results);
+            data = data.concat(res.data);
             this.setState({
                 data,
                 loading: false,
@@ -61,12 +61,15 @@ export default class History extends Component {
         });
     }
 
+    deleteConversation(item) {
+        console.log(item)
+    }
+
     render() {
-        const { Header, Content, Footer } = Layout;
+        const {Header, Content, Footer} = Layout;
         return (
             <Layout className="layout">
-                <Content style={{ padding: '0 50px' }}>
-
+                <Content style={{padding: '0 50px'}}>
                     <Row>
                         <Col span={24}>
                             <div className="demo-infinite-container">
@@ -75,25 +78,26 @@ export default class History extends Component {
                                     pageStart={0}
                                     loadMore={this.handleInfiniteOnLoad}
                                     hasMore={!this.state.loading && this.state.hasMore}
-                                    useWindow={false}
-                                >
+                                    useWindow={false}>
                                     <List
                                         dataSource={this.state.data}
                                         renderItem={item => (
-                                            <List.Item key={item.id} className="c-list">
+                                            <List.Item key={item.id} className="c-list-item">
+                                                <Badge count={5} className="c-list-item-badge">
+                                                    <a href={'chat/single/conversation/'+item.id+'/'+item.token}className="head-example"/>
+                                                </Badge>
                                                 <List.Item.Meta
                                                     avatar={<Avatar
-                                                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                                                    title={<a href="https://ant.design">{item.name}</a>}
+                                                        src="https://wallpapercave.com/wp/wp3350839.jpg"/>}
+                                                    title={<a href={'/chat/single/conversation/'+item.id+'/'+item.token}>{item.name}</a>}
                                                     description={item.receivers[0].name}
                                                 />
                                                 <div>
-                                                    <Button type="primary" shape="circle" icon="delete"/>
-
+                                                    <Button type="danger" shape="circle" icon="delete"
+                                                            onClick={() => this.deleteConversation(item)}/>
                                                 </div>
                                             </List.Item>
-                                        )}
-                                    >
+                                        )}>
                                         {this.state.loading && this.state.hasMore && (
                                             <div className="demo-loading-container">
                                                 <Spin/>

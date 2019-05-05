@@ -24,6 +24,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'chat'], function () {
         Route::get('/history', 'ChatController@history')->name('chat.history');
+        Route::get('/single/conversation/{id}/{token}', 'ChatController@open')->name('chat.open');
+        Route::post('/send', 'ChatController@send')->name('chat.send');
     });
 
 });

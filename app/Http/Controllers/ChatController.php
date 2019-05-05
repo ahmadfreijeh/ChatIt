@@ -9,9 +9,11 @@
 namespace App\Http\Controllers;
 
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
+use App\Conversation;
+use App\Message;
 
 class ChatController extends Controller {
 
@@ -19,7 +21,7 @@ class ChatController extends Controller {
     public function history(Request $request) {
         $conversations = Auth::user()
             ->conversations()
-            ->with('messages','receivers')
+            ->with('messages', 'receivers')
             ->get();
         return Response::json(['data' => $conversations]);
     }
@@ -27,6 +29,15 @@ class ChatController extends Controller {
     //todo send message to teh user by triggering an event
     public function send(Request $request) {
 
+        $message = new Message();
+        $message->message = $request->message;
+        $message->conversation_id = $request->conversation_id;
+        $message->sender = Auth::user()->id;
+        $message->save();
+
+        //todo broadcast data to all users in this conversation after create the message
+
+        return Response::json(['data' => $message]);
     }
 
     //todo delete conversation
@@ -41,7 +52,9 @@ class ChatController extends Controller {
 
     //todo open single conversation
     public function open($id, $token) {
-
+        $conversation = Conversation::with('messages')
+            ->find($id);
+        return view('chat.single_conversation', compact('conversation'));
     }
 
     //todo archive conversation note:soft delete

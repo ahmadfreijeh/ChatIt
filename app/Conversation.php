@@ -15,7 +15,6 @@ class Conversation extends Model {
         return $this->belongsToMany(User::class, 'users_conversations');
     }
 
-
     /**
      *
      * Helper function that returns users related

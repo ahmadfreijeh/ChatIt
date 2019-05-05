@@ -12,4 +12,6 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+require('./components/NavBar');
 require('./components/chat/History');
+require('./components/chat/SingleConversation');

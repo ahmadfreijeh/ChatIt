@@ -1,3 +1,6 @@
+body{
+  background-color: #f0f2f5;
+}
 .demo-infinite-container {
   border-radius: 4px;
   overflow: auto;
@@ -10,10 +13,25 @@
   width: 100%;
   text-align: center;
 }
-.c-list{
+.c-list-wrapper{
+  padding:20px;
+}
+.c-list-item{
   background-color: #ffffff;
   border: 1px solid #ffffff;
   padding:10px 14px;
-  margin-bottom:4px;
+  margin-top:15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  position:relative;
 }
+.c-list-item-badge{
+  position:absolute;
+  right:0;
+  top:0;
+}
+
+//Text colors
+.text-danger{
+  color:#ff4d4f !important;
+}
+
