@@ -1,0 +1,19 @@
+.demo-infinite-container {
+  border-radius: 4px;
+  overflow: auto;
+  padding: 8px 24px;
+  height: 600px;
+}
+.demo-loading-container {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+}
+.c-list{
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  padding:10px 14px;
+  margin-bottom:4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
