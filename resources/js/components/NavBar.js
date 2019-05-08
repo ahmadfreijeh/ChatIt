@@ -32,15 +32,15 @@ export default class NavBar extends Component {
                 onClick={(e) => this.handleClick(e)}
                 selectedKeys={[this.state.current]}
                 mode="horizontal">
+                <Menu.Item key="mail">
+                    <Icon type="mail"/>
+                </Menu.Item>
                 <SubMenu title={<span className="submenu-title-wrapper" key="user"><Icon
                     type="setting"/>Welcome, {this.props.name}</span>}>
                     <MenuItemGroup title="Item 2">
                         <Menu.Item key="setting:3">Option 3</Menu.Item>
                     </MenuItemGroup>
                 </SubMenu>
-                <Menu.Item key="mail">
-                    <Icon type="mail"/>Navigation One
-                </Menu.Item>
             </Menu>
         );
     }

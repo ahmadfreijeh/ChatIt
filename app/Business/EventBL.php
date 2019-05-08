@@ -19,11 +19,20 @@ namespace App\Business;
 
 
 use App\Business\Interfaces\EventInterface;
+use App\Events\ChatEvent;
+use Illuminate\Support\Facades\Auth;
 
 class EventBL implements EventInterface {
 
-    public function trigger($name, $type, $data = null) {
-        // TODO: Implement trigger() method.
+    public function trigger($name, $users, $data = null) {
+        $sender = Auth::user();
+        foreach ($users as $user) {
+            switch ($name) {
+                case 'chat':
+                    broadcast(new ChatEvent($sender, $user, $data));
+                    break;
+            }
+        }
     }
 
     public function fireNotification($message, $user) {

@@ -11,7 +11,7 @@ namespace App\Business\Interfaces;
 
 interface EventInterface {
 
-    public function trigger($name, $type, $data = null);
+    public function trigger($name, $users, $data = null);
 
     public function fireNotification($message, $user);
 

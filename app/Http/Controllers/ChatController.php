@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Events\ChatEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -29,13 +30,22 @@ class ChatController extends Controller {
     //todo send message to teh user by triggering an event
     public function send(Request $request) {
 
-        $message = new Message();
-        $message->message = $request->message;
-        $message->conversation_id = $request->conversation_id;
-        $message->sender = Auth::user()->id;
-        $message->save();
+        $conversation = Conversation::find($request->conversation_id);
+        $authedUser = Auth::user();
 
-        //todo broadcast data to all users in this conversation after create the message
+        if ($conversation) {
+            $message = new Message();
+            $message->message = $request->message;
+            $message->conversation_id = $conversation->id;
+            $message->sender = $authedUser->id;
+
+            if ($message->save()) {
+                $users = $conversation->users()
+                    ->wherePivot('user_id', '!=', $authedUser->id)
+                    ->get();
+                $this->event->trigger('chat', $users, $message);
+            }
+        }
 
         return Response::json(['data' => $message]);
     }
@@ -52,7 +62,7 @@ class ChatController extends Controller {
 
     //todo open single conversation
     public function open($id, $token) {
-        $conversation = Conversation::with('messages')
+        $conversation = Conversation::with('messages', 'receivers')
             ->find($id);
         return view('chat.single_conversation', compact('conversation'));
     }
