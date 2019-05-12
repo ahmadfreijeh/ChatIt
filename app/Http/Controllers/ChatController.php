@@ -51,8 +51,12 @@ class ChatController extends Controller {
     }
 
     //todo delete conversation
-    public function delete($id) {
-
+    public function delete(Request $request) {
+        $conversation = Conversation::find($request->conversation_id);
+        if ($conversation) {
+            $conversation->delete();
+        }
+        return Response::json(['data' => "Conversation deleted"]);
     }
 
     //todo delete specific message in both side like whatsapp

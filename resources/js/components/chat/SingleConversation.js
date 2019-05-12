@@ -1,17 +1,22 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {
-    List, Layout, Row, Col, Avatar, Button, Input, PageHeader, Menu, Icon, Empty
+    List, Layout, Row, Col, Avatar, Input, PageHeader, Icon, Empty
 } from 'antd';
 import moment from 'moment';
 import reqwest from "reqwest";
 import {Scrollbars} from 'react-custom-scrollbars';
+
+
 import History from './History.js';
 
 const send = 'http://localhost:8000/chat/send';
 
 export default class SingleConversation extends Component {
 
+    /*
+    * @props conv (current conversation data)
+    * */
     constructor(props) {
         super(props);
         this.state = {
@@ -19,11 +24,16 @@ export default class SingleConversation extends Component {
             conversation: null,
             receivers: null,
             message: '',
-            userId: Laravel.user
+            userId: Laravel.user,
+            collapsed: false,
         }
     }
 
     componentWillMount() {
+        /*
+        *  Listening for events based on private channel related to the ( end user )
+        *  on receiving data append single object to data array (state)
+        * */
         window.Echo.private('chat.channel.' + this.state.userId)
             .listen('ChatEvent', (e) => {
                 this.concatData(e.data)
@@ -41,6 +51,10 @@ export default class SingleConversation extends Component {
         this.scrollDown();
     }
 
+    /*
+    * Sending the message to the end user
+    * @var send api link const above the class
+    * */
     send() {
         reqwest({
             url: send,
@@ -59,6 +73,10 @@ export default class SingleConversation extends Component {
         });
     }
 
+    /*
+    * Function used to append new received data to existing array
+    * then scroll to the bottom of the chat container
+    * */
     concatData(newData) {
         let data = this.state.data.concat(newData);
         this.setState({
@@ -72,6 +90,12 @@ export default class SingleConversation extends Component {
         this.refs.scrollbar.scrollToBottom();
     }
 
+    toggleSideBar() {
+        this.setState({
+            collapsed: !this.state.collapsed,
+        });
+    }
+
     render() {
         const {Header, Content, Footer, Sider} = Layout;
         const {TextArea} = Input;
@@ -80,19 +104,31 @@ export default class SingleConversation extends Component {
             <Layout className="layout">
                 <Content style={{padding: '0px 50px'}}>
                     <Layout style={{background: '#fff'}} className="chat-box-main-container">
-                        <Sider width={400} style={{background: '#fff'}}>
+
+                        {/* Chat box side bar */}
+                        <Sider width={400} style={{background: '#fff'}} collapsed={this.state.collapsed} breakpoint="sm"
+                               collapsedWidth={0} trigger={null}>
                             <History/>
                         </Sider>
-                        <Content style={{padding: '0 24px', minHeight: 280}}>
+                        {/* Ends */}
+
+                        {/*
+                        * Middle chat box container
+                        * Header,
+                        * Content (List and scrollbar),
+                        * MessageBox (TextArea)
+                        **/}
+                        <Content style={{minHeight: 280}}>
                             <Row>
                                 <Col lg={{span: 24}}>
                                     <PageHeader
-                                        onBack={() => window.location.href = "/home"}
+                                        onBack={() => this.toggleSideBar()}
+                                        backIcon={<Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}/>}
                                         title={this.state.receivers[0].name}
                                         subTitle={this.state.receivers[0].email}
                                     />
                                 </Col>
-                                <Col className="chat-box-bg" lg={{span: 24}}>
+                                <Col className="chat-box-bg" span={24}>
                                     <Scrollbars ref='scrollbar' style={{height: 700}} hideTracksWhenNotNeeded={true}>
                                         <List
                                             className="c-list-wrapper chat-box"
@@ -118,7 +154,7 @@ export default class SingleConversation extends Component {
                                             )}/>
                                     </Scrollbars>
                                 </Col>
-                                <Col lg={{span: 24}}>
+                                <Col span={24}>
                                     <TextArea rows={2} className="message-input" placeholder="Type a message"
                                               onPressEnter={() => this.send()}
                                               onChange={(e) => this.setState({message: e.target.value})}
@@ -126,6 +162,8 @@ export default class SingleConversation extends Component {
                                 </Col>
                             </Row>
                         </Content>
+                        {/* Ends */}
+
                     </Layout>
                 </Content>
             </Layout>

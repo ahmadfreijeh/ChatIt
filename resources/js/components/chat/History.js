@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {
-    List, message, Avatar, Spin, Row, Col, Layout, Badge, Button, notification
+    List, message, Avatar, Spin, Row, Col, Layout, Badge, Button, notification, Popconfirm
 } from 'antd';
 import reqwest from 'reqwest';
-import InfiniteScroll from 'react-infinite-scroller';
+import {Scrollbars} from 'react-custom-scrollbars';
 
 const history = 'http://localhost:8000/chat/history';
+const deleteApi = 'http://localhost:8000/chat/history/delete';
+const deleteMessage = 'Are you sure to delete this conversation?';
 
 export default class History extends Component {
 
@@ -14,23 +16,27 @@ export default class History extends Component {
         super(props);
         this.state = {
             data: [],
-            loading: false,
+            loading: true,
             hasMore: true,
             userId: Laravel.user
         }
     }
 
+    /*
+    * Show popup side notification containing sender and teh data
+    * */
     receiveMessageSideNotification(sender, data) {
         notification.open({
             message: sender,
             description: data.message,
-            onClick: () => {
-                console.log('Notification Clicked!');
-            },
         });
     };
 
     componentDidMount() {
+        /*
+         *  Listening for events based on private channel related to the ( end user )
+         *  on receiving data append single object to data array (state)
+         * */
         window.Echo.private('chat.channel.' + this.state.userId)
             .listen('ChatEvent', (e) => {
 
@@ -50,6 +56,7 @@ export default class History extends Component {
         this.fetchData((res) => {
             this.setState({
                 data: res,
+                loading: false,
             });
         });
     }
@@ -66,30 +73,23 @@ export default class History extends Component {
         });
     }
 
-    handleInfiniteOnLoad() {
-        let data = this.state.data;
-        this.setState({
-            loading: true,
+    deleteConversation(item, index) {
+        reqwest({
+            url: deleteApi,
+            type: 'json',
+            method: 'delete',
+            headers: {
+                'X-CSRF-TOKEN': Laravel.token,
+            },
+            data: {
+                conversation_id: item.id
+            },
+            success: (res) => {
+                this.setState({
+                    data: this.state.data.filter((_, i) => i !== index)
+                });
+            },
         });
-        if (data.length > 14) {
-            message.warning('Infinite List loaded all');
-            this.setState({
-                hasMore: false,
-                loading: false,
-            });
-            return;
-        }
-        this.fetchData((res) => {
-            data = data.concat(res.data);
-            this.setState({
-                data,
-                loading: false,
-            });
-        });
-    }
-
-    deleteConversation(item) {
-        console.log(item)
     }
 
     render() {
@@ -97,16 +97,11 @@ export default class History extends Component {
         return (
             <Row>
                 <Col span={24}>
-                    <div className="chat-infinite-container">
-                        <InfiniteScroll
-                            initialLoad={false}
-                            pageStart={0}
-                            loadMore={this.handleInfiniteOnLoad}
-                            hasMore={!this.state.loading && this.state.hasMore}
-                            useWindow={false}>
+                    <Scrollbars ref='scrollbar' style={{height: 700}} hideTracksWhenNotNeeded={true}>
+                        <div className="chat-infinite-container">
                             <List
                                 dataSource={this.state.data}
-                                renderItem={item => (
+                                renderItem={(item, index) => (
                                     <List.Item key={item.id} className="c-list-item">
                                         <Badge count={item.messages.length} className="c-list-item-badge">
                                             <a href={'chat/single/conversation/' + item.id + '/' + item.token}
@@ -120,8 +115,11 @@ export default class History extends Component {
                                             description={item.receivers[0].name}
                                         />
                                         <div>
-                                            <Button type="danger" shape="circle" icon="delete"
-                                                    onClick={() => this.deleteConversation(item)}/>
+                                            <Popconfirm placement="top" title={deleteMessage}
+                                                        onConfirm={() => this.deleteConversation(item, index)}
+                                                        okText="Yes" cancelText="No">
+                                                <Button type="danger" shape="circle" icon="delete"/>
+                                            </Popconfirm>
                                         </div>
                                     </List.Item>
                                 )}>
@@ -131,8 +129,8 @@ export default class History extends Component {
                                     </div>
                                 )}
                             </List>
-                        </InfiniteScroll>
-                    </div>
+                        </div>
+                    </Scrollbars>
                 </Col>
             </Row>
         );

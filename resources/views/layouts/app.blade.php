@@ -54,6 +54,16 @@
         @yield('content')
     </main>
 
+    @if(Request::segment(1) == 'home')
+        <footer class="footer-style">
+            <div class="row">
+                <div class="col-12 center" style="padding-top: 20px;">
+                    <p>chat with the public &#128526; @ChatIt</p>
+                </div>
+            </div>
+        </footer>
+    @endif
+
 </div>
 </body>
 </html>
