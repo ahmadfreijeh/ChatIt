@@ -1,4 +1,4 @@
-## Samples
+## Screenshots
 
 ![Login](https://user-images.githubusercontent.com/18750476/57657914-93414680-75e5-11e9-9fdf-30e39b3a13f1.png)
 
