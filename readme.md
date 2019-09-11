@@ -1,12 +1,12 @@
 ## Screenshots
 
-![Login](https://user-images.githubusercontent.com/18750476/57657914-93414680-75e5-11e9-9fdf-30e39b3a13f1.png)
-![Screenshot (209)](https://user-images.githubusercontent.com/18750476/64735623-93991200-d4f1-11e9-9a03-7a04e0f6a2cd.png)
-![Screenshot (210)](https://user-images.githubusercontent.com/18750476/64735624-93991200-d4f1-11e9-9332-0b5abca40159.png)
-![Screenshot (211)](https://user-images.githubusercontent.com/18750476/64735625-93991200-d4f1-11e9-8fad-415056362ba4.png)
-![Screenshot (212)](https://user-images.githubusercontent.com/18750476/64735627-9431a880-d4f1-11e9-802b-72c5da77ef85.png)
-![Screenshot (213)](https://user-images.githubusercontent.com/18750476/64735629-9431a880-d4f1-11e9-9720-d4d9fbb758ac.png)
-![Screenshot (214)](https://user-images.githubusercontent.com/18750476/64735630-94ca3f00-d4f1-11e9-81bc-50717a6be3df.png)
+<img src="https://user-images.githubusercontent.com/18750476/64735623-93991200-d4f1-11e9-9a03-7a04e0f6a2cd.png" width="330" height="150"/> |
+<img src="https://user-images.githubusercontent.com/18750476/64735623-93991200-d4f1-11e9-9a03-7a04e0f6a2cd.png" width="330" height="150"/> |
+<img src="https://user-images.githubusercontent.com/18750476/64735624-93991200-d4f1-11e9-9332-0b5abca40159.png" width="330" height="150"/> |
+<img src="https://user-images.githubusercontent.com/18750476/64735625-93991200-d4f1-11e9-8fad-415056362ba4.png" width="330" height="150"/> |
+<img src="https://user-images.githubusercontent.com/18750476/64735627-9431a880-d4f1-11e9-802b-72c5da77ef85.png" width="330" height="150"/> |
+<img src="https://user-images.githubusercontent.com/18750476/64735629-9431a880-d4f1-11e9-9720-d4d9fbb758ac.png" width="330" height="150"/> |
+
 
 
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
