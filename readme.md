@@ -1,6 +1,6 @@
 ## Screenshots
 
-<img src="https://user-images.githubusercontent.com/18750476/64735623-93991200-d4f1-11e9-9a03-7a04e0f6a2cd.png" width="330" height="150"/> |
+<img src="https://user-images.githubusercontent.com/18750476/64736231-dad3d280-d4f2-11e9-914e-3580ecb92771.png" width="330" height="150"/> |
 <img src="https://user-images.githubusercontent.com/18750476/64735623-93991200-d4f1-11e9-9a03-7a04e0f6a2cd.png" width="330" height="150"/> |
 <img src="https://user-images.githubusercontent.com/18750476/64735624-93991200-d4f1-11e9-9332-0b5abca40159.png" width="330" height="150"/> |
 <img src="https://user-images.githubusercontent.com/18750476/64735625-93991200-d4f1-11e9-8fad-415056362ba4.png" width="330" height="150"/> |
